@@ -16,6 +16,10 @@ const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeM
 const HappyPack = require('happypack')
 const os = require('os')
 
+const config = {
+    
+}
+
 
 
 

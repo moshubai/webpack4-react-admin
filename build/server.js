@@ -8,7 +8,8 @@ const compress = require('compression')
 const proxy = require('http-proxy-middleware')
 const { proxyApiPathArr, proxyHost } = setting
 
-
+const app = express();
+app.use(compress())
 
 
 
@@ -23,7 +24,7 @@ const { proxyApiPathArr, proxyHost } = setting
 
 // const port = webpackConfig.devServer.port;
 
-// const app = express();
+// 
 // const compiler = webpack(webpackConfig);
 
 // var devMiddleware = require("webpack-dev-middleware")(compiler, {
