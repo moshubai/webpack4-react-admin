@@ -4,21 +4,51 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack" 
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/moshubai/webpack4-react-admin.git"
+    "build": "webpack --config build/webpack.prod.config.js",
+    "start": "webpack-dev-server --inline --progress --config build/webpack.dev.config.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "zhanboxu",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/moshubai/webpack4-react-admin/issues"
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
-  "homepage": "https://github.com/moshubai/webpack4-react-admin#readme",
   "devDependencies": {
+    "@babel/core": "^7.13.15",
+    "@babel/plugin-transform-runtime": "^7.13.15",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/preset-react": "^7.13.13",
+    "@babel/runtime": "^7.13.10",
+    "@babel/runtime-corejs2": "^7.13.10",
+    "autoprefixer": "^10.2.5",
+    "babel-loader": "^8.2.2",
+    "case-sensitive-paths-webpack-plugin": "^2.4.0",
+    "chalk": "^4.1.0",
+    "compression": "^1.7.4",
+    "css-loader": "^5.2.4",
+    "cssnano": "^5.0.1",
+    "figures": "^3.2.0",
+    "file-loader": "^6.2.0",
+    "happypack": "^5.0.1",
+    "html-webpack-plugin": "^4.5.2",
+    "http-proxy-middleware": "^1.2.0",
+    "ip": "^1.1.5",
+    "mini-css-extract-plugin": "^1.5.0",
+    "open": "^8.0.6",
+    "optimize-css-assets-webpack-plugin": "^5.0.4",
+    "pnp-webpack-plugin": "^1.6.4",
+    "react-dev-utils": "^11.0.4",
+    "sass": "^1.32.11",
+    "sass-loader": "^11.0.1",
+    "style-loader": "^2.0.0",
+    "terser-webpack-plugin": "^5.1.1",
+    "url-loader": "^4.1.1",
     "webpack": "4.43.0",
-    "webpack-cli": "3.3.12"
+    "webpack-cli": "3.3.12",
+    "webpack-dev-middleware": "^4.1.0",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-merge": "^4.2.2"
   }
 }
