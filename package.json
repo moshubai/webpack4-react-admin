@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && cross-env NODE_ENV=production webpack --config build/webpack.prod.js",
-    "start": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.dev.js"
+    "build": "npm run clean && cross-env NODE_ENV=production node build/script/compile.js",
+    "start": "cross-env NODE_ENV=development node build/script/start.js"
   },
   "keywords": [],
   "author": "zhanboxu",
@@ -34,6 +34,7 @@
     "cssnano": "^5.0.1",
     "figures": "^3.2.0",
     "file-loader": "^6.2.0",
+    "fs-extra": "^9.1.0",
     "happypack": "^5.0.1",
     "html-webpack-plugin": "^4.5.2",
     "http-proxy-middleware": "^1.2.0",

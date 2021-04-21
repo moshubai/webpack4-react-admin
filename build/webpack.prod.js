@@ -24,7 +24,6 @@ module.exports = webpackMerge(baseWebpackConfig, {
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
-          // 只能在production中运用MiniCssExtractPlugin.loader
           {
             loader: MiniCssExtractPlugin.loader,
           },

@@ -15,6 +15,10 @@ module.exports = {
     publicPath // 打包后的资源的访问路径前缀
   },
   resolve: {
+    modules: [
+      util.resolve('src'),
+      'node_modules',
+    ],
     extensions: ['*', '.web.tsx', '.web.ts', '.web.js', '.js', '.jsx', '.json', '.scss', '.jpg', '.png'],
     alias: {
       '@': util.resolve("src"),
@@ -84,43 +88,8 @@ module.exports = {
   plugins: [
     new HappyPack({
       id: 'babel',
-      loaders: [
-        {
-          loader: 'babel-loader',
-          options: {
-            "plugins": [
-              [
-                "@babel/plugin-transform-runtime",
-                {
-                  "corejs": 2, // polyfill 需要使用@babel/runtime-corejs2
-                  "useBuildIns": "usage", //按需引入,即使用什么新特性打包什么新特性, 可以减小打包的体积
-                }
-              ],
-
-              ['@babel/plugin-proposal-class-properties', { loose: true }],
-            ],
-            "presets": [
-              [
-                "@babel/preset-env",
-                {
-                  "modules": false,
-                  "targets": {
-                    "browsers": [
-                      "> 1%",
-                      "last 2 versions",
-                      "not ie <= 8"
-                    ]
-                  }
-                }
-              ],
-              "@babel/preset-react"
-            ],
-          }
-
-        }
-      ],
-      // 共享进程池
-      threadPool: happyThreadPool,
+      loaders: [util.bableConfig],
+      threadPool: happyThreadPool, // 共享进程池
       verbose: false,
     }),
     new webpack.DefinePlugin({
