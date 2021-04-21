@@ -1,46 +1,24 @@
+const path = require("path")
+const PnpWebpackPlugin = require("pnp-webpack-plugin")
+const webpack = require("webpack")
+const HappyPack = require("happypack")
+const os = require('os')
+const HtmlWebpackPlugin = require("html-webpack-plugin")
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
 const util = require("./util")
 const {
   env, basePath, externals, main,
   publicPath, globals,
   sourcemaps
 } = require('../project.config')
+
+const inProject = path.resolve.bind(path, basePath)
+
 const __DEV__ = env === 'development'
 const __TEST__ = env === 'test'
 const __PROD__ = env === 'production'
 
-const babelLoader = {
-  loader: 'babel-loader',
-  options: {
-    plugins: [
-      '@babel/plugin-syntax-dynamic-import',
-      '@babel/plugin-proposal-export-default-from',
-      '@babel/plugin-transform-runtime',
-      ['@babel/plugin-proposal-decorators', { legacy: true }],
-      ['@babel/plugin-proposal-class-properties', { loose: true }],
-      ['import', {
-        libraryName: 'antd',
-        libraryDirectory: 'es',
-        style: 'css'
-      }]
-    ],
-    presets: [
-      ['@babel/preset-react'],
-      ['@babel/preset-env', {
-        modules: false,
-        loose: true,
-        // useBuiltIns: "usage",
-        targets: {
-          ie: 9,
-          browsers: [
-            'last 5 versions',
-            'safari >= 7',
-            'not ie < 9'
-          ]
-        }
-      }],
-    ]
-  }
-}
+
 module.exports = {
   // 配置如何展示性能提示
   performance: {
@@ -48,14 +26,14 @@ module.exports = {
     maxEntrypointSize: 512000,
     maxAssetSize: 512000
   },
-  
+
   // 出口
   output: {
     publicPath// 打包后的资源的访问路径前缀
   },
   resolve: {
     modules: [
-      util.inProject('src'),
+      inProject('src'),
       'node_modules',
     ],
     extensions: ['*', '.web.tsx', '.web.ts', '.web.js', '.js', '.jsx', '.json', '.scss', '.jpg', '.png'],
@@ -111,32 +89,7 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: 'happypack/loader?id=happyBabel',
-      },
-      {
-        test: /\.(sa|sc|c)ss$/,
-        use: [
-          // 只能在production中运用MiniCssExtractPlugin.loader
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1
-            }
-          },
-          'postcss-loader',
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: sourcemaps,
-              includePaths: [
-                util.inProjectSrc('styles'),
-              ],
-            },
-          }
-        ]
+        use: ['happypack/loader?id=babel']
       },
       // images
       {
@@ -147,11 +100,69 @@ module.exports = {
           name: 'images/[name]-[hash].[ext]'
         },
       },
-      ...util.plugList,
+      // fonts
+      {
+        test: new RegExp(`\\.woff$`),
+        loader: 'url-loader',
+        options: {
+          name: 'fonts/[name]-[hash].[ext]',
+          limit: 10000,
+          mimetype: 'application/font-woff',
+        }
+      },
+      {
+        test: new RegExp(`\\.woff2$`),
+        loader: 'url-loader',
+        options: {
+          name: 'fonts/[name]-[hash].[ext]',
+          limit: 10000,
+          mimetype: 'application/font-woff2',
+        }
+      }, {
+        test: new RegExp(`\\.otf$`),
+        loader: 'url-loader',
+        options: {
+          name: 'fonts/[name]-[hash].[ext]',
+          limit: 10000,
+          mimetype: 'font/opentype',
+        }
+      }, {
+        test: new RegExp(`\\.ttf$`),
+        loader: 'url-loader',
+        options: {
+          name: 'fonts/[name]-[hash].[ext]',
+          limit: 10000,
+          mimetype: 'application/octet-stream',
+        }
+      }, {
+        test: new RegExp(`\\.eot$`),
+        loader: 'url-loader',
+        options: {
+          name: 'fonts/[name]-[hash].[ext]',
+          limit: 10000,
+          mimetype: 'application/vnd.ms-fontobject',
+        }
+      }, {
+        test: new RegExp(`\\.svg$`),
+        loader: 'url-loader',
+        options: {
+          name: 'fonts/[name]-[hash].[ext]',
+          limit: 10000,
+          mimetype: 'image/svg+xml',
+        }
+      },
     ]
   },
 
   plugins: [
+    new HappyPack({
+      id: 'babel',
+      // cache: __DEV__,
+      loaders: [util.babelLoader],
+      // 共享进程池
+      threadPool: happyThreadPool,
+      verbose: false,
+    }),
     // 允许创建一个在编译时可以配置的全局常量
     new webpack.DefinePlugin({
       'process.env': { NODE_ENV: JSON.stringify(env) },
@@ -160,19 +171,16 @@ module.exports = {
       __PROD__,
       ...globals
     }),
-    new HappyPack({
-      id: 'happyBabel',
-      // cache: __DEV__,
-      loaders: [babelLoader],
-      // 共享进程池
-      threadPool: happyThreadPool,
-      verbose: false,
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true,
-      debug: false,
-      options: {
-        context: __dirname
+    new HtmlWebpackPlugin({
+      filename: "index.html",
+      template: util.inProjectSrc('index.html'),//html模板
+      inject: true, // true：默认值，script标签位于html文件的 body 底部
+      // hash: true, // 在打包的资源插入html会加上hash
+      //  html 文件进行压缩
+      minify: {
+        removeComments: true,               //去注释
+        collapseWhitespace: true,           //压缩空格
+        removeAttributeQuotes: true         //去除属性引用
       }
     }),
     // moment 去除语言包，减少体积

@@ -1,11 +1,14 @@
 const webpackMerge = require("webpack-merge");
 const baseWebpackConfig = require("./webpack.base.config")
 const util = require("./util")
-const HtmlWebpackPlugin = require("html-webpack-plugin")
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const webpack = require("webpack")
+const path = require("path")
+const { basePath } = require('../project.config')
 
+const inProject = path.resolve.bind(path, basePath)
 module.exports = webpackMerge(baseWebpackConfig, {
   // 入口
   entry: {
@@ -15,7 +18,7 @@ module.exports = webpackMerge(baseWebpackConfig, {
   // 这种情况下，源自 loader 的 source map 会得到更好的处理结果
   devtool: false,
   output: {
-    path: util.inProject("dist"),
+    path: inProject("dist"),
     filename: 'js/[name].[chunkhash].js',
     chunkFilename: 'js/[name].[chunkhash].js',
   },
@@ -76,22 +79,18 @@ module.exports = webpackMerge(baseWebpackConfig, {
   },
   // 插件
   plugins: [
-    new HtmlWebpackPlugin({
-      filename: util.resolve('./../dist/index.html'), // html模板的生成路径
-      template: 'public/index.html',//html模板
-      inject: true, // true：默认值，script标签位于html文件的 body 底部
-      hash: true, // 在打包的资源插入html会加上hash
-      //  html 文件进行压缩
-      minify: {
-        removeComments: true,               //去注释
-        collapseWhitespace: true,           //压缩空格
-        removeAttributeQuotes: true         //去除属性引用
-      }
-    }),
+    
     new MiniCssExtractPlugin({
       filename: 'css/[name].[contenthash].css',
       chunkFilename: 'css/[id].[hash].css'
-    })
+    }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false,
+      options: {
+        context: __dirname
+      }
+    }),
   ],
 
 })
