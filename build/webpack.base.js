@@ -1,15 +1,14 @@
 const util = require("./util")
-const {
-  env, basePath, externals, main,
-  publicPath, globals, outDir,
-  sourcemaps
-} = require('../project.config')
+const { publicPath, globals, env } = require('../project.config')
 const PnpWebpackPlugin = require('pnp-webpack-plugin')
 const path = require("path")
+const webpack = require("webpack")
 const HappyPack = require('happypack')
 const os = require('os')
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
-
+const __DEV__ = env === 'development'
+const __TEST__ = env === 'test'
+const __PROD__ = env === 'production'
 module.exports = {
   // 出口
   output: {
@@ -44,8 +43,6 @@ module.exports = {
         // loader: 'babel-loader',//loader的名称（必须）
         use: ['happypack/loader?id=babel']
       },
-
-
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
@@ -98,7 +95,9 @@ module.exports = {
                   "corejs": 2, // polyfill 需要使用@babel/runtime-corejs2
                   "useBuildIns": "usage", //按需引入,即使用什么新特性打包什么新特性, 可以减小打包的体积
                 }
-              ]
+              ],
+
+              ['@babel/plugin-proposal-class-properties', { loose: true }],
             ],
             "presets": [
               [
@@ -123,7 +122,15 @@ module.exports = {
       // 共享进程池
       threadPool: happyThreadPool,
       verbose: false,
+    }),
+    new webpack.DefinePlugin({
+      'process.env': { NODE_ENV: JSON.stringify(env) },
+      __DEV__,
+      __TEST__,
+      __PROD__,
+      ...globals
     })
-  ]
+  ],
+
 
 }

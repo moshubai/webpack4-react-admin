@@ -26,24 +26,27 @@ module.exports = webpackMerge(baseWebpackConfig, {
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
+          // 只能在production中运用MiniCssExtractPlugin.loader
           {
             loader: 'style-loader',
           },
           {
             loader: 'css-loader',
+            options: {
+              importLoaders: 1
+            }
           },
           'postcss-loader',
           {
-
-            loader: 'sass-loader', // 编译 sass -> CSS
+            loader: 'sass-loader',
             options: {
               sourceMap: true,
               includePaths: [
                 util.inProjectSrc('styles'),
-              ],
-            }
-          },
-        ],
+              ]
+            },
+          }
+        ]
       },
     ]
   },
@@ -57,17 +60,21 @@ module.exports = webpackMerge(baseWebpackConfig, {
         collapseWhitespace: true,
       },
     }),
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin()
   ],
   devtool: "source-map", //inline把js打包在一个文件里面 hidden分离出来 eval也是分离
   devServer: {
-    historyApiFallback: true, // 当找不到路径的时候，默认加载index.html文件
     open: true,
-    // hotOnly: true, //启用热模块替换
-    // quiet: true,//除了初始启动信息外，什么都不会写入控制台
-    contentBase: false,
     publicPath: "/",
-    host: ip.address(),
-    port,
+    host: ip.address(),//ip
+    port,//端口
+    compress: true, //为每个静态文件开启 gzip
+    historyApiFallback: true, // 当找不到路径的时候，默认加载index.html文件
+    hotOnly: true, //启用热模块替换
+    // quiet: true,//除了初始启动信息外，什么都不会写入控制台
+    progress: true,//将运行进度输出到控制台。
+    contentBase: false,
     stats: {
       colors: true
     }

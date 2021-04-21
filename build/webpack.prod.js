@@ -40,6 +40,7 @@ module.exports = webpackMerge(baseWebpackConfig, {
             options: {
               sourceMap: false,
               includePaths: [
+                util.inProjectSrc('styles'),
               ],
             },
           }
