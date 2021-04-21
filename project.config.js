@@ -1,6 +1,6 @@
 const ip = require('ip')
 const NODE_ENV = process.env.NODE_ENV || 'development'
-const port = '6787'
+const port = '8999'
 const environment = process.argv[2]
 const hostConfig = {
   test:'http://192.168.0.171:8725/api/',
