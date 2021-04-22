@@ -1,8 +1,8 @@
-const util = require("./util")
+const util = require('./util')
 const { publicPath, globals, env } = require('../project.config')
 const PnpWebpackPlugin = require('pnp-webpack-plugin')
-const path = require("path")
-const webpack = require("webpack")
+const path = require('path')
+const webpack = require('webpack')
 const HappyPack = require('happypack')
 const os = require('os')
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
@@ -21,17 +21,17 @@ module.exports = {
     ],
     extensions: ['*', '.web.tsx', '.web.ts', '.web.js', '.js', '.jsx', '.json', '.scss', '.jpg', '.png'],
     alias: {
-      '@': util.resolve("src"),
-      pages: util.resolve(`src/views`),
-      routes: util.resolve(`src/routes`),
-      layout: util.resolve(`src/page-layout`),
-      components: util.resolve(`src/components`),
-      mobx: path.resolve(__dirname, '../node_modules/mobx/lib/mobx.js'),
-      store: util.resolve(`src/mobx/index`),
-      api: util.resolve(`src/api`),
-      func: util.resolve(`src/func`),
-      mixin: util.resolve(`src/styles/_mixin.scss`),
-      style: util.resolve(`src/styles`)
+      '@': util.resolve('src'),
+      pages: util.resolve('src/pages'),
+      routes: util.resolve('src/routes'),
+      layout: util.resolve('src/page-layout'),
+      components: util.resolve('src/components'),
+      // mobx: path.resolve(__dirname, '../node_modules/mobx/lib/mobx.js'),
+      store: util.resolve('src/store/index'),
+      api: util.resolve('src/api'),
+      func: util.resolve('src/func'),
+      mixin: util.resolve('src/styles/_mixin.scss'),
+      style: util.resolve('src/styles')
     },
     // add pnp
     plugins: [
@@ -42,8 +42,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,//一个匹配loaders所处理的文件的拓展名的正则表达式，这里用来匹配js和jsx文件（必须）
-        exclude: /node_modules/,//屏蔽不需要处理的文件（文件夹）（可选）
+        test: /\.(js|jsx)$/, // 一个匹配loaders所处理的文件的拓展名的正则表达式，这里用来匹配js和jsx文件（必须）
+        exclude: /node_modules/, // 屏蔽不需要处理的文件（文件夹）（可选）
         // loader: 'babel-loader',//loader的名称（必须）
         use: ['happypack/loader?id=babel']
       },
@@ -100,6 +100,5 @@ module.exports = {
       ...globals
     })
   ],
-
 
 }

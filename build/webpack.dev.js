@@ -1,19 +1,19 @@
-const webpackMerge = require("webpack-merge");
-const baseWebpackConfig = require("./webpack.base")
-const util = require("./util")
-const HtmlWebpackPlugin = require("html-webpack-plugin")
-const webpack = require("webpack")
+const webpackMerge = require('webpack-merge')
+const baseWebpackConfig = require('./webpack.base')
+const util = require('./util')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const webpack = require('webpack')
 module.exports = webpackMerge(baseWebpackConfig, {
   // 打包模式
-  mode: "development",
+  mode: 'development',
   // 入口
   entry: {
-    main: [util.inProjectSrc("main")],
+    main: [util.inProjectSrc('main')],
   },
   // 出口
   output: {
-    path: util.resolve("dist"),
-    filename: "js/[name].[hash].js",
+    path: util.resolve('dist'),
+    filename: 'js/[name].[hash].js',
   },
   // 模块化
   module: {
@@ -45,12 +45,12 @@ module.exports = webpackMerge(baseWebpackConfig, {
       },
     ]
   },
-  devtool: "source-map", //inline把js打包在一个文件里面 hidden分离出来 eval也是分离
+  devtool: 'source-map', // inline把js打包在一个文件里面 hidden分离出来 eval也是分离
   // 组件
   plugins: [
     new HtmlWebpackPlugin({
       template: util.inProjectSrc('index.html'),
-      filename: "index.html",
+      filename: 'index.html',
       inject: true,
       minify: {
         collapseWhitespace: true,
@@ -59,5 +59,5 @@ module.exports = webpackMerge(baseWebpackConfig, {
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin()
   ],
-  
+
 })
