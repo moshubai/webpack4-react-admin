@@ -18,7 +18,7 @@ exports.bableConfig = {
           useBuildIns: 'usage', // 按需引入,即使用什么新特性打包什么新特性, 可以减小打包的体积
         }
       ],
-
+      ['@babel/plugin-proposal-decorators', { legacy: true }], // 装饰器
       ['@babel/plugin-proposal-class-properties', { loose: true }],
       ['import', {
         libraryName: 'antd',

@@ -4,7 +4,7 @@ import { Route, Switch, HashRouter } from 'react-router-dom'
 import { ConfigProvider } from 'antd'
 import Loadable from 'components/loadable' // 进度条
 import { Provider } from 'react-redux'
-import store from 'store'
+import store from './store/index'
 import Home from 'pages/home'
 import PageLayout from 'layout'
 import Base from 'routes'

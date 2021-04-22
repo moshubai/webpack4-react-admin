@@ -27,7 +27,6 @@ module.exports = {
       layout: util.resolve('src/page-layout'),
       components: util.resolve('src/components'),
       // mobx: path.resolve(__dirname, '../node_modules/mobx/lib/mobx.js'),
-      store: util.resolve('src/store/index'),
       api: util.resolve('src/api'),
       func: util.resolve('src/func'),
       mixin: util.resolve('src/styles/_mixin.scss'),
