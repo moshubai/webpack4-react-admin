@@ -1,10 +1,10 @@
 import React from 'react'
-import { history } from 'func'
-
-function HomePage () {
+import { useHistory } from 'react-router-dom'
+function HomePage (props) {
+  const history = useHistory()
   const goPage = () => {
-    // console.log(history) // xu-log
-    history.push('/login')
+    console.log(history, props) // xu-log
+    history.push('/count')
   }
   return (
     <React.Fragment>
