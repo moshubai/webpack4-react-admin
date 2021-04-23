@@ -1,10 +1,17 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
+
+import { connect } from 'react-redux'
+
+// export default connect(mapStateToProps, mapDispatchToProps)(containerName)}
+
 function HomePage (props) {
   const history = useHistory()
   const goPage = () => {
     console.log(history, props) // xu-log
-    history.push('/count')
+    // history.push('/count/2/3')
+    console.log(props.user) // xu-log
   }
   return (
     <React.Fragment>
@@ -15,4 +22,13 @@ function HomePage (props) {
     </React.Fragment>
   )
 }
-export default HomePage
+HomePage.propTypes = {
+  user: PropTypes.object
+}
+export default connect(
+  ({ user }) => ({ user }),
+  {
+    login: () => { }
+  }
+
+)(HomePage)

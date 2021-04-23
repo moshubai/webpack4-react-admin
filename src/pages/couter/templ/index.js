@@ -27,6 +27,7 @@ class ReduxPage extends Component {
     add: PropTypes.func,
     minus: PropTypes.func,
     addFn: PropTypes.func,
+    location: PropTypes.object
   }
 
   componentDidMount () {
@@ -37,10 +38,14 @@ class ReduxPage extends Component {
 
   render () {
     console.log('this.props', this.props) // log
-    const { count, add, minus, addFn } = this.props
+    const { count, add, minus, addFn, location } = this.props
     return (
       <div>
         <h3>ReduxPage2-使用react-redux的情况</h3>
+        {/* <h4>传递参数{location.state.id}</h4> */}
+        {/* <h4>传递参数{location.query.id}</h4> */}
+        {/* <h4>传递参数{location.search}</h4> */}
+
         <p>{count}</p>
         <button onClick={add}>加法</button>
         <button onClick={minus}>减法</button>

@@ -1,19 +1,19 @@
 import { applyMiddleware, createStore, combineReducers } from 'redux'
-
-// import createSagaMiddleware from 'redux-saga'
-// import loginSaga from "./account/action";
+import createSagaMiddleware from 'redux-saga'
+import loginSaga from './account/actions'
+//
 import counterReducer from './count/reducers'
-// import accountReducer from './account/reducers';
+import accountReducer from './account/reducers'
 
-// const sagaMiddleware = createSagaMiddleware();
+const sagaMiddleware = createSagaMiddleware()
 // 数据仓库 get set subscribe（订阅）
 const store = createStore(
   combineReducers({
     count: counterReducer,
-    // user: accountReducer
+    user: accountReducer
   }),
-  // applyMiddleware(sagaMiddleware)
+  applyMiddleware(sagaMiddleware)
 )
-// sagaMiddleware.run(loginSaga);
+sagaMiddleware.run(loginSaga)
 
 export default store

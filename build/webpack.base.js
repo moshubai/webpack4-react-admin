@@ -1,5 +1,5 @@
 const util = require('./util')
-const { publicPath, globals, env } = require('../project.config')
+const { publicPath, globals, env } = require('../setting')
 const PnpWebpackPlugin = require('pnp-webpack-plugin')
 const path = require('path')
 const webpack = require('webpack')
@@ -27,10 +27,10 @@ module.exports = {
       layout: util.resolve('src/page-layout'),
       components: util.resolve('src/components'),
       // mobx: path.resolve(__dirname, '../node_modules/mobx/lib/mobx.js'),
-      api: util.resolve('src/api'),
       func: util.resolve('src/func'),
       mixin: util.resolve('src/styles/_mixin.scss'),
-      style: util.resolve('src/styles')
+      style: util.resolve('src/styles'),
+      Api: util.resolve('src/api/index'),
     },
     // add pnp
     plugins: [

@@ -1,13 +1,33 @@
 import React from 'react'
 import { Form, Input, Button, Checkbox } from 'antd'
+import PropTypes from 'prop-types'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import { history } from 'func'
+import { useHistory } from 'react-router-dom'
+import Api from 'Api'
+import { login } from '@/store/account/func'
+import { connect } from 'react-redux'
 
-function FormLabel () {
+function FormLabel (props) {
+  const history = useHistory()
   const onFinish = (values) => {
-    console.log('Success:', values)
+    console.log('Success:', values, props)
+    const { login } = props
+    login(values)
 
-    history.push('/home')
+    history.push('/')
+    // const { username, password } = values
+    // Api.AccountLogin({
+    //   username,
+    //   password
+    // })
+    //   .then(res => {
+    //     console.log('res', res) // xu-log
+    //     // util.cookies.set('token', res.token)
+    //
+    //   })
+    //   .catch(err => {
+    //     console.log('err', err) // xu-log
+    //   })
   }
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo)
@@ -22,7 +42,7 @@ function FormLabel () {
         onFinishFailed={onFinishFailed}
       >
         <Form.Item
-          name='用户名'
+          name='username'
           rules={[
             {
               required: true,
@@ -33,7 +53,7 @@ function FormLabel () {
           <Input size='large' placeholder='用户名:admin' prefix={<UserOutlined />} />
         </Form.Item>
         <Form.Item
-          name='密码'
+          name='password'
           rules={[
             {
               required: true,
@@ -68,4 +88,14 @@ function FormLabel () {
     </React.Fragment>
   )
 }
-export default FormLabel
+
+FormLabel.propTypes = {
+  login: PropTypes.func,
+}
+export default connect(
+  ({ user }) => ({ isLogin: user.isLogin }),
+  {
+    login
+  }
+
+)(FormLabel)

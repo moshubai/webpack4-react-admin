@@ -1,5 +1,5 @@
 const WebpackServer = require('webpack-dev-server')
-const port = require('../../project.config').port
+const port = require('../../setting').port
 const ip = require('ip').address()
 const devConfig = require('../webpack.dev')
 const webpack = require('webpack')
@@ -35,7 +35,16 @@ function startDevServer () {
     hotOnly: true, // 启用热模块替换
     clientLogLevel: 'none', // 启用内联模式(inline mode)，会在控制台打印消息，用none阻止。
     inline: true, // dev-server 的两种不同模式之间切换：true内联模式(inline mode)、 false: iframe 模式，默认true。
-
+    proxy: {
+      '/mds': {
+        target: 'http://192.168.0.172:8888/',
+        ws: false,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/mds': ''
+        }
+      }
+    }
   })
   devServer.listen(port)
 }

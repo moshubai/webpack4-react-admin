@@ -3,9 +3,9 @@ const NODE_ENV = process.env.NODE_ENV || 'development'
 const port = '8999'
 const environment = process.argv[2]
 const hostConfig = {
-  test:'http://192.168.0.171:8725/api/',
-  dev:'http://192.168.0.171:8725/api/',
-  prod:'http://192.168.0.171:8725/api/'
+  test:'http://192.168.0.172:8888/',
+  dev:'http://192.168.0.172:8888/',
+  prod:'http://192.168.0.172:8888/'
 }
 let proxyHost = ''
 switch (environment) {
@@ -36,9 +36,6 @@ module.exports = {
     'react-router-dom'
   ],
   proxyHost,
-  // 转发的请求地址
-  proxyApiPathArr: [
-    'api',
-    'mgt'
-  ]
+
+  cookiesExpires: 1, // Cookies 默认保存时间，单位：天
 }

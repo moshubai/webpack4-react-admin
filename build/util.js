@@ -1,4 +1,4 @@
-const { basePath, srcDir } = require('../project.config')
+const { basePath, srcDir } = require('../setting')
 const path = require('path')
 exports.resolve = dir => path.join(__dirname, '..', dir)
 

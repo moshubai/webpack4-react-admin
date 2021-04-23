@@ -1,10 +1,17 @@
 import mergeRoute from 'components/merge-routes'
-import { ReduxPage } from 'pages/couter'
+import { ReduxPage, CountDetails } from 'pages/couter'
 
 export default mergeRoute([
   {
-    path: '/count',
-    tmpl: ReduxPage
+    path: '/count/:id/:type',
+    tmpl: ReduxPage,
+    children: [
+      {
+        path: '/details',
+        tmpl: CountDetails,
+      }
+    ]
+
   },
   // {
   //   path: '/example',
