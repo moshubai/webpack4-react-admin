@@ -3,9 +3,9 @@ const { publicPath, globals, env } = require('../setting')
 const PnpWebpackPlugin = require('pnp-webpack-plugin')
 const path = require('path')
 const webpack = require('webpack')
-const HappyPack = require('happypack')
-const os = require('os')
-const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
+// const HappyPack = require('happypack')
+// const os = require('os')
+// const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
 const __DEV__ = env === 'development'
 const __TEST__ = env === 'test'
 const __PROD__ = env === 'production'
@@ -15,7 +15,11 @@ module.exports = {
     publicPath // 打包后的资源的访问路径前缀
   },
   resolve: {
-
+    modules: [
+      util.resolve('src'), // 指定当前目录下的 node_modules 优先查找
+      'node_modules', // 将默认写法放在后面
+    ],
+    // modules: [path.resolve(__dirname, './node_modules')],
     extensions: ['.js', '.jsx', '.json', '.scss', '.jpg', '.png'],
     alias: {
       '@': util.resolve('src'),
@@ -31,10 +35,7 @@ module.exports = {
       // react: path.resolve(__dirname, './node_modules/react/umd/react.production.min.js'),
       // 'react-dom': path.resolve(__dirname, './node_modules/react-dom/umd/react-dom.production.min.js')
     },
-    modules: [
-      util.resolve('src'), // 指定当前目录下的 node_modules 优先查找
-      'node_modules', // 将默认写法放在后面
-    ],
+
     // add pnp
     plugins: [
       PnpWebpackPlugin
@@ -46,9 +47,7 @@ module.exports = {
       {
         test: /\.(js|jsx)$/, // 一个匹配loaders所处理的文件的拓展名的正则表达式，这里用来匹配js和jsx文件（必须）
         exclude: /node_modules/, // 屏蔽不需要处理的文件（文件夹）（可选）
-        // include: path.resolve(__dirname, '../src'), // 只对 src 下面的文件使用
-
-        // loader: 'babel-loader',//loader的名称（必须）
+        // include: path.resolve(__dirname, './src'), // 只对 src 下面的文件使用
         use: [{
           loader: 'thread-loader',
           options: {
@@ -58,11 +57,6 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|gif)$/,
-        // loader: 'url-loader',
-        // options: {
-        //   limit: 8192,
-        //   name: 'images/[name]-[hash].[ext]'
-        // },
         use: {
           loader: 'url-loader',
           options: {
