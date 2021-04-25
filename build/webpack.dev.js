@@ -3,7 +3,10 @@ const baseWebpackConfig = require('./webpack.base')
 const util = require('./util')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
-module.exports = webpackMerge(baseWebpackConfig, {
+
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
+const smp = new SpeedMeasurePlugin()
+const devWebpack = webpackMerge(baseWebpackConfig, {
   // 打包模式
   mode: 'development',
   // 入口
@@ -56,8 +59,13 @@ module.exports = webpackMerge(baseWebpackConfig, {
         collapseWhitespace: true,
       },
     }),
-    new webpack.NamedModulesPlugin(),
+
+    // new webpack.NamedModulesPlugin(),
+
     new webpack.HotModuleReplacementPlugin()
   ],
 
 })
+smp.wrap(devWebpack)
+
+module.exports = devWebpack

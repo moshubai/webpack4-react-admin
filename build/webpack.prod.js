@@ -1,12 +1,16 @@
+const webpack = require('webpack')
 const webpackMerge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base')
-const util = require('./util')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
-const webpack = require('webpack')
-module.exports = webpackMerge(baseWebpackConfig, {
+const util = require('./util')
+
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
+const smp = new SpeedMeasurePlugin()
+
+const prodWebpack = webpackMerge(baseWebpackConfig, {
   // 指定构建环境
   mode: 'production',
   // 入口
@@ -49,15 +53,29 @@ module.exports = webpackMerge(baseWebpackConfig, {
   },
   optimization: {
     // 抽离webpack runtime到单文件
+
+    minimize: true,
     runtimeChunk: 'single',
+    usedExports: true,
     minimizer: [
       // mini js
       new TerserPlugin({
+        parallel: true, // 多进程并发运行以提高构建速度
+        cache: true, // 开启缓存
         terserOptions: {
           ecma: undefined,
           warnings: false,
           parse: {},
-          compress: {},
+          compress: {
+            // 删除⽆⽤的代码
+            unused: true,
+            // 删掉 debugger
+            drop_debugger: true, // eslint-disable-line
+            // 移除 console
+            drop_console: true, // eslint-disable-line
+            // 移除⽆⽤的代码
+            dead_code: true // eslint-disable-line
+          },
           mangle: true,
           module: false,
           output: null,
@@ -92,7 +110,11 @@ module.exports = webpackMerge(baseWebpackConfig, {
       filename: 'css/[name].[contenthash].css',
       chunkFilename: 'css/[id].[hash].css'
     }),
+
     // 确保在文件没发生改变时，contentHash也不会变化
     new webpack.HashedModuleIdsPlugin()
   ],
 })
+
+smp.wrap(prodWebpack)
+module.exports = prodWebpack

@@ -15,7 +15,7 @@ function HomePage (props) {
   }
   return (
     <React.Fragment>
-      HomePage2
+      HomePage7777720000
       <button onClick={goPage}>
         测试跳转
       </button>
